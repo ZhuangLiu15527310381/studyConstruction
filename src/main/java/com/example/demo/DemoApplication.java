@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.design.abstractFactory.BJFactory;
+import com.example.demo.design.abstractFactory.OrderPizza;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
