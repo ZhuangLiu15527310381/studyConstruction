@@ -1,7 +1,5 @@
-package com.example.demo.design;
+package com.example.demo.design.singleton;
 
-
-import sun.management.jmxremote.SingleEntryRegistry;
 
 /**
  * 线程安全类型的单例模式
