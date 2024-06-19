@@ -15,11 +15,10 @@ public class DualPointer {
 
     @Test
     void contextLoads() {
-        String[] chars = {"h","e","l","s","o"};
 
-        String[] strings = reverseChar(chars);
-        System.out.println(String.join(",", strings));
 
+        String abcdefg = reverseString2("abcdefg", 2);
+        System.out.println(abcdefg);
 
     }
 
@@ -69,6 +68,63 @@ public class DualPointer {
         }
         return chars;
     }
+
+
+    /**
+     * 给定一个字符串 s 和一个整数 k，从字符串开头算起, 每计数至 2k 个字符，就反转这 2k 个字符中的前 k 个字符。
+     *
+     * 如果剩余字符少于 k 个，则将剩余字符全部反转。
+     *
+     * 如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，其余字符保持原样。
+     *
+     * 示例:
+     *
+     * 输入: s = "abcdefg", k = 2
+     * 输出: "bacdfeg"
+     */
+    public String reverseString(String input,int k){
+        if (Objects.isNull(input)){
+            return null;
+        }
+
+        int startIndex = 0;
+        int length = input.length();
+        StringBuilder res = new StringBuilder();
+        while (startIndex < length) {
+            int firstK = Math.min((startIndex + k), length);
+            int secondK = Math.min((startIndex + 2 * k), length);
+            StringBuilder temp = new StringBuilder();
+            temp.append(input, startIndex, firstK).reverse();
+            temp.append(input, firstK, secondK);
+            res.append(temp);
+            startIndex = startIndex + 2 * k;
+        }
+        return res.toString();
+    }
+
+    public String reverseString2(String input,int k){
+        if (Objects.isNull(input)){
+            return null;
+        }
+        char[] charArray = input.toCharArray();
+        for (int i = 0; i < charArray.length; i= i+2*k) {
+            int leftIndex = i;
+            int rightIndex = Math.min(leftIndex + k -1 ,charArray.length-1);
+            while (leftIndex < rightIndex){
+                char temp = charArray[leftIndex];
+                charArray[leftIndex] = charArray[rightIndex];
+                charArray[rightIndex] = temp;
+                leftIndex++;
+                rightIndex--;
+            }
+        }
+        return new String(charArray);
+    }
+
+
+
+
+
 
 
 }
