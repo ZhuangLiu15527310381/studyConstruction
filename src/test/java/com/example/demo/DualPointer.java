@@ -2,7 +2,10 @@ package com.example.demo;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.AnnotationUtils;
+import org.junit.platform.commons.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -17,15 +20,16 @@ public class DualPointer {
     void contextLoads() {
 
 
-        String abcdefg = reverseString2("abcdefg", 2);
-        System.out.println(abcdefg);
-
+//        removeExtraSpaces(" a  ss b s  ");
     }
 
     /**
      * 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
      * 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并原地修改输入数组。
+     * 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
      * <img src="https://camo.githubusercontent.com/af914d7ac56d356860bc689966e569893795615f940f5f725321f649d2b5af2f/68747470733a2f2f636f64652d7468696e6b696e672e63646e2e626365626f732e636f6d2f676966732f32372e2545372541372542422545392539392541342545352538352538332545372542342541302d2545362539412542342545352538412539422545382541372541332545362542332539352e676966"/>
+     *
+     *
      */
     public int removeValue(int[] nums,int value){
         int slowIndex = 0;
@@ -122,9 +126,94 @@ public class DualPointer {
     }
 
 
+    /**
+     *给定一个字符串，逐个翻转字符串中的每个单词。
+     *
+     * 示例 1：
+     * 输入: "the sky is blue"
+     * 输出: "blue is sky the"
+     *
+     * 示例 2：
+     * 输入: "  hello world!  "
+     * 输出: "world! hello"
+     * 解释: 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+     *
+     * 示例 3：
+     * 输入: "a good   example"
+     * 输出: "example good a"
+     * 解释: 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+     */
+
+    @Test
+    public void testWordsReverse(){
+
+        String s = reverseWords("a good   example");
+        System.out.println(s);
 
 
+    }
 
 
+    public String reverseWords(String s) {
+        StringBuilder stringBuilder = removeExtrSpace(s);
+        //字符串全部反转
+        stringBuilder = reverseStringBuilder(stringBuilder,0,stringBuilder.length()-1);
+        stringBuilder = reverseEveryWord(stringBuilder);
+        return stringBuilder.toString();
+    }
+
+
+    /**
+     * 去除字符串中的空格
+     * @param input
+     * @return
+     */
+    public StringBuilder removeExtrSpace(String input) {
+        char[] charArray = input.toCharArray();
+        int startIndex = 0;
+        int rightIndex = charArray.length - 1;
+        StringBuilder stringBuilder = new StringBuilder();
+        while (charArray[startIndex] == ' ') {
+            startIndex++;
+        }
+        while (charArray[rightIndex] == ' ') {
+            rightIndex--;
+        }
+        while (startIndex <= rightIndex) {
+            if (charArray[startIndex] !=' ' || stringBuilder.charAt(stringBuilder.length()-1) != ' '){
+                stringBuilder.append(charArray[startIndex]);
+            }
+            startIndex++;
+        }
+        return stringBuilder;
+    }
+
+    /**
+     * 反转字符串指定区间[start, end]的字符
+     */
+    private StringBuilder reverseStringBuilder(StringBuilder stringBuilder, int leftIndex, int rightIndex) {
+        while (leftIndex <= rightIndex){
+            char temp = stringBuilder.charAt(leftIndex);
+            stringBuilder.setCharAt(leftIndex,stringBuilder.charAt(rightIndex));
+            stringBuilder.setCharAt(rightIndex,temp);
+            leftIndex++;
+            rightIndex--;
+        }
+        return stringBuilder;
+    }
+
+    private StringBuilder reverseEveryWord(StringBuilder stringBuilder) {
+        int startIndex = 0;
+        int endIndex = 1;
+        while (startIndex <= endIndex && endIndex < stringBuilder.length()){
+            if (stringBuilder.charAt(endIndex) ==' '){
+                reverseStringBuilder(stringBuilder,startIndex,endIndex-1);
+                startIndex =Math.min(endIndex+1,stringBuilder.length()-1);
+                endIndex = Math.min(startIndex+1,stringBuilder.length()-1);
+            }
+            endIndex++;
+        }
+        return stringBuilder;
+    }
 
 }
