@@ -294,6 +294,56 @@ public class DualPointer {
     }
 
 
+    /**
+     *  KMP算法   先计算前后缀公共最长子序列
+     * 实现 strStr() 函数。
+     *
+     * 给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
+     *
+     * 示例 1: 输入: haystack = "hello", needle = "ll" 输出: 2
+     *
+     * 示例 2: 输入: haystack = "aaaaa", needle = "bba" 输出: -1
+     *
+     *
+     */
+
+    public int getIndexOfString(String input,String key){
+        int[] next = getNext(key);
+        char[] charArray = input.toCharArray();
+        char[] keyCharArray = key.toCharArray();
+        int j = 0;
+        for (int i = 0; i < charArray.length; i++) {
+            while (j > 0 && charArray[i] != charArray[j]){
+                j = next[j-1];
+            }
+            if (charArray[i] == keyCharArray[j]){
+                j++;
+            }
+            if (j == keyCharArray.length-1){
+                return j;
+            }
+        }
+        return -1;
+    }
+
+
+    public int[] getNext(String input){
+        int[] next = new int[input.length()];
+        char[] charArray = input.toCharArray();
+        int j = 0;
+        for (int i = 1; i < charArray.length; i++) {
+            while (j > 0 && charArray[j] != charArray[i]) {
+                j = next[j - 1];
+            }
+            if (charArray[i] == charArray[j] ){
+                j++;
+            }
+            next[i] = j;
+        }
+        return next;
+    }
+
+
 
 
 
