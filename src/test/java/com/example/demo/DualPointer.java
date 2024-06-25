@@ -306,8 +306,20 @@ public class DualPointer {
      *
      *
      */
+    @Test
+    public void testKmp(){
+
+        int indexOfString = getIndexOfString("a", "aa");
+        System.out.println(indexOfString);
+    }
+
+
+
 
     public int getIndexOfString(String input,String key){
+        if (key.length()> input.length()){
+            return -1;
+        }
         int[] next = getNext(key);
         char[] charArray = input.toCharArray();
         char[] keyCharArray = key.toCharArray();
@@ -320,7 +332,7 @@ public class DualPointer {
                 j++;
             }
             if (j == keyCharArray.length-1){
-                return j;
+                return i - j +1;
             }
         }
         return -1;
