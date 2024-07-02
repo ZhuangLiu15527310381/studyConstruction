@@ -309,7 +309,7 @@ public class DualPointer {
     @Test
     public void testKmp(){
 
-        int indexOfString = getIndexOfString("a", "aa");
+        int indexOfString = getIndexOfString("a", "acbaa");
         System.out.println(indexOfString);
     }
 
@@ -344,6 +344,7 @@ public class DualPointer {
         char[] charArray = input.toCharArray();
         int j = 0;
         for (int i = 1; i < charArray.length; i++) {
+            //向前寻找子串
             while (j > 0 && charArray[j] != charArray[i]) {
                 j = next[j - 1];
             }
@@ -354,6 +355,129 @@ public class DualPointer {
         }
         return next;
     }
+
+
+    /**
+     * 给定一个非空的字符串，判断它是否可以由它的一个子串重复多次构成。给定的字符串只含有小写英文字母，并且长度不超过10000。
+     *
+     * 示例 1:
+     *
+     * 输入: "abab"
+     * 输出: True
+     * 解释: 可由子字符串 "ab" 重复两次构成。
+     * 示例 2:
+     *
+     * 输入: "aba"
+     * 输出: False
+     * 示例 3:
+     *
+     * 输入: "abcabcabcabc"
+     * 输出: True
+     * 解释: 可由子字符串 "abc" 重复四次构成。 (或者子字符串 "abcabc" 重复两次构成。)
+     *
+     */
+
+    int count = 0;
+
+    private volatile int sum = 0;
+
+
+    @Test
+    public void testAdd() {
+        int backCount = 1001;
+
+
+        Thread thread1 = new Thread(() -> {
+            synchronized (Object.class) {
+                count = 0;
+                while (count < backCount){
+                    if (count % 3 == 0) {
+                        sum = sum + count;
+                        System.out.println("线程1=== sum + count===" + sum + "+" +count);
+                    }
+                    count++;
+                }
+
+            }
+        });
+        Thread thread2 = new Thread(() -> {
+            synchronized (Object.class) {
+                count = 0;
+                while (count < backCount){
+                    if (count % 3 == 1) {
+                        sum = sum + count;
+                        System.out.println("线程2=== sum + count===" + sum + "+" +count);
+                    }
+                    count++;
+                }
+            }
+        });
+        Thread thread3 = new Thread(() -> {
+            synchronized (Object.class) {
+                count = 0;
+                while (count < backCount){
+                    if (count % 3 == 2 ) {
+                        sum = sum + count;
+                        System.out.println("线程3=== sum + count===" + sum + "+" +count);
+                    }
+                    count++;
+                }
+            }
+        });
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+            thread3.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+
+        System.out.println("count: " + count + "  sum=" +sum);
+
+
+    }
+
+
+
+
+    @Test
+    public void test(){
+        sum = 0;
+        for (int i = 0; i < 1001; i++) {
+            sum +=i;
+        }
+        System.out.println("sum = "+sum);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
